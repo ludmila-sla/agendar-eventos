@@ -12,7 +12,6 @@ class taskController extends Controller
         $data = $request->all();
         $data['_id'] = Str::uuid();
         DB::table('tasks')->insert($data);
-        organizer::dispatch($data['user'])->onqueue('tasks');//chamar ao gerar pdf
         return response([], $data ? 201 : 400);
     }
     public function edit(taskRequest $request){
@@ -35,5 +34,9 @@ class taskController extends Controller
         $task = DB::table('tasks')->where('user', $user)
         ->where('_id', $task)->delete();
         return response( $task, $task ? 200 : 404);
+    }
+    public function pdf($user){
+        organizer::dispatch($user)->onqueue('tasks');
+        return response([], 200);
     }
 }
