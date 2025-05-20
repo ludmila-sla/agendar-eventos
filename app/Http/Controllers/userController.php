@@ -11,6 +11,7 @@ class userController extends Controller
     public function create(userRequest $request){
         $data = $request->all();
         $data['_id'] = Str::uuid();
+        $data['minutes'] = $data['hours'] * 60;
         DB::table('users')->insert($data);
         return response([], $data ? 201 : 400);
     }

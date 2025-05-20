@@ -25,7 +25,7 @@ class organizer implements ShouldQueue
 
         $user = DB::table('users')->where('id', $this->user)->first();
 
-        $dailyMinutes = $user->daily_minutes; //arrumar
+        $dailyMinutes = $user->minutes;
         $daysToPlan = $user->week ? 7 : 5;
         $startDate = Carbon::now()->startOfDay();
 
@@ -42,6 +42,7 @@ class organizer implements ShouldQueue
                 $calendar = $this->blockTime($calendar, $slot, $task->duration);
             }
         }
+        GeneratePDFJob::dispatch($calendar)->onqueue('tasks');
         Redis::setex("schedule:{$this->user}", 86400, json_encode($calendar));
 
     }
