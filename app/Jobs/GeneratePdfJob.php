@@ -38,6 +38,7 @@ class GeneratePdfJob implements ShouldQueue
         $pdf = Pdf::loadView('schedule.pdf', ['schedule' => $schedule]);
 
         $path = "schedules/{$this->user}_schedule.pdf";
+        $pdf->save($path);
         Storage::put($path, $pdf->output());
 
         $email = DB::table('users')->where('id', $this->user)->value('email');

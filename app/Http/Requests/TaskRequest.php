@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class userRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -19,11 +19,12 @@ class userRequest extends FormRequest
     public function rules(): array
     {
         return [
+            "user" => "required|string",
             "name" => "required|string",
-            "email" => "required|string",
-            "phone" => "sometimes|string",
-            "hours" => "required|integer|min:1|max:20",
-            "days" => "required|string|in:week,bussines" //todos os dias ou dias uteis
+            "duration" => "required|integer|min:1",
+            "priority" => "required|string|in:1,2,3,4,5",
+            "status" => "required|string|in:open,closed,processing",
+            "description" => "sometimes|string"
         ];
     }
 }

@@ -1,61 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🗓️ Task Organizer - Sistema Inteligente de Tarefas com Agendamento Automático
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esse projeto é um sistema de organização de tarefas onde o usuário cria uma conta, cadastra suas tarefas, e o sistema — de forma **assíncrona** — gera um **calendário automático** priorizando as tarefas por ordem de prioridade, convertendo o cronograma em **PDF** e enviando para o e-mail do usuário.
 
-## About Laravel
+## 🚀 Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Cadastro de usuários com configuração de dias úteis e horas disponíveis por dia
+- Criação de tarefas com prioridade e duração
+- edição, listagem, e exibição de tarefas
+- função de deletar tarefas e usuários
+- Organização automática das tarefas em um cronograma semanal
+- Geração de PDF com o cronograma
+- Envio automático do PDF por e-mail
+- Suporte a MongoDB como banco de dados principal
+- Jobs assíncronos com fila (`queue`) para performance e escalabilidade
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🛠️ Tecnologias
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8+
+- Laravel 10
+- MongoDB (via `jenssegers/laravel-mongodb`)
+- Redis (cache e fila)
+- DomPDF (geração de PDF)
+- Laravel Queue (trabalhos assíncronos)
+- Mail (envio de e-mails)
 
-## Learning Laravel
+## 📦 Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/SEU_USUARIO/task-organizer.git
+cd task-organizer
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### ⚙️ Configure o `.env`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```dotenv
+DB_CONNECTION=mongodb
+DB_HOST=127.0.0.1
+DB_PORT=27017
+DB_DATABASE=task_db
+DB_USERNAME=
+DB_PASSWORD=
 
-## Laravel Sponsors
+QUEUE_CONNECTION=redis
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=seu_usuario
+MAIL_PASSWORD=sua_senha
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=organizer@exemplo.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
 
-### Premium Partners
+> 🧠 Atenção: é necessário ter o PHP MongoDB Driver instalado.  
+> No Linux: `sudo apt install php-mongodb`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🧪 Testes
 
-## Contributing
+Para rodar os testes:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan test
+```
 
-## Code of Conduct
+> Os testes são feitos com `Queue::fake()` por padrão.  
+> Para testar envio real de e-mails/PDFs, remova o fake manualmente do teste.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🖼️ Exemplo de uso
 
-## Security Vulnerabilities
+1. **Usuário cria conta** informando tempo disponível por dia
+2. **Cria tarefas** com duração e prioridade
+3. O sistema agenda tudo de forma inteligente
+4. Gera o cronograma em PDF
+5. Envia por e-mail 📩
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🤝 Contribuição
 
-## License
+Achou algum bug ou quer sugerir uma melhoria? Fique à vontade para abrir uma _issue_ ou mandar um _pull request_.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🧙‍♀️ Autora
+
+**Ludmila** – [GitHub](https://github.com/ludmila-sla)  

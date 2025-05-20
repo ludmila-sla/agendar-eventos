@@ -13,7 +13,7 @@ class organizer implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(private $user)
+    public function __construct(public $user)
     {
 
     }

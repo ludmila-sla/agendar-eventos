@@ -8,35 +8,40 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 class taskController extends Controller
 {
-    public function create(taskRequest $request){
+    public function create(taskRequest $request, $user)
+    {
         $data = $request->all();
         $data['_id'] = Str::uuid();
+        $data['user'] = $user;
         DB::table('tasks')->insert($data);
         return response([], $data ? 201 : 400);
     }
-    public function edit(taskRequest $request){
+    public function delete($task, $user)
+    {
+        $task = DB::table('tasks')->where('user', $user)
+            ->where('_id', $task)->delete();
+        return response($task, $task ? 200 : 404);
+    }
+    public function edit(taskRequest $request, $id)
+    {
         $data = $request->all();
-        $data['_id'] = Str::uuid();
-        DB::table('tasks')->insert($data);
+        DB::table('tasks')->where('_id', $id)->update($data);
         return response([], $data ? 201 : 400);
     }
-    public function list($user){
+    public function list($user)
+    {
         $tasks = DB::table('tasks')->where('user', $user)->get();
-        return response( $tasks, 200);
+        return response($tasks, 200);
     }
-
-    public function show($task, $user){
-        $task = DB::table('tasks')->where('user', $user)
-        ->where('_id', $task)->first();
-        return response( $task, $task ? 200 : 404);
-    }
-    public function delete($task, $user){
-        $task = DB::table('tasks')->where('user', $user)
-        ->where('_id', $task)->delete();
-        return response( $task, $task ? 200 : 404);
-    }
-    public function pdf($user){
+    public function pdf($user)
+    {
         organizer::dispatch($user)->onqueue('tasks');
         return response([], 200);
+    }
+    public function show($task, $user)
+    {
+        $task = DB::table('tasks')->where('user', $user)
+            ->where('_id', $task)->first();
+        return response($task, $task ? 200 : 404);
     }
 }
